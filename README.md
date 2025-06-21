@@ -1,6 +1,6 @@
 # Rutenett Mønster Verktøy
 
-En interaktiv web-applikasjon for å lage mønstre på et rutenett. Perfekt for å designe pixel art, mønstre, eller bare for å eksperimentere med geometriske former.
+En interaktiv web-applikasjon for å lage mønstre på et rutenett. Perfekt for å designe pixel art, mønstre, eller bare for å eksperimentere med geometriske former. Denne applikasjonen er 100% certified vibecoded.
 
 ## Funksjoner
 
@@ -78,13 +78,7 @@ grid/
 
 ## Utvikling
 
-For å utvide applikasjonen kan du:
-
-1. **Legge til nye rutenett-størrelser**: Rediger `<select id="gridSize">` i HTML
-2. **Endre farger**: Tilpass CSS-variablene i `styles.css`
-3. **Nye funksjoner**: Utvid `GridPatternTool`-klassen i `script.js`
-
-### Eksempel på nye funksjoner du kan legge til
+### TODO
 
 - Forhåndsdefinerte mønstre
 - Fargevalg for aktive ruter
@@ -94,33 +88,4 @@ For å utvide applikasjonen kan du:
 
 ## 🚀 Live Demo
 
-Du kan teste applikasjonen live på: [GitHub Pages](https://username.github.io/grid)
-
-*(Erstatt `username` med ditt GitHub-brukernavn)*
-
-## 📦 Deployment til GitHub Pages
-
-### Automatisk deployment (anbefalt)
-
-1. **Fork eller klon dette repositoriet**
-2. **Gå til repository settings på GitHub**
-3. **Scroll ned til "Pages" seksjonen**
-4. **Under "Source", velg "Deploy from a branch"**
-5. **Velg "main" branch og "/ (root)" folder**
-6. **Klikk "Save"**
-7. **Siden vil være tilgjengelig på `https://[ditt-brukernavn].github.io/[repository-navn]`**
-
-### Manuell deployment
-
-```bash
-# Klon repositoriet
-git clone https://github.com/[ditt-brukernavn]/grid.git
-cd grid
-
-# Legg til alle filer
-git add .
-git commit -m "Initial commit"
-git push origin main
-
-# Aktiver GitHub Pages i repository settings
-```
+Du kan teste applikasjonen live på: [GitHub Pages](https://jonasnico.github.io/grid/)
