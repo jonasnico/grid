@@ -1,25 +1,27 @@
-# Rutenett designer
+# Grid Pattern Designer
 
-En enkel applikasjon som lar deg lage og redigere rutenett-mønstre. Nyttig for å lage strikkemønstere.
+A simple application that lets you create and edit grid patterns. Useful for creating knitting patterns, pixel art, and geometric designs.
 
-## Bruk
+> **Note:** The application interface is in Norwegian.
 
-1. **Åpne `index.html`** i en nettleser
-2. **Velg rutenett-størrelse** fra dropdown-menyen
-3. **Klikk på rutene** for å lage mønstre
-4. **Bruk zoom-slideren** for å tilpasse visningen
-5. **Lagre mønsteret** når du er fornøyd
+## Usage
 
-## Utvikling
+1. **Open `index.html`** in a web browser
+2. **Select grid size** from the dropdown menu
+3. **Click on cells** to create patterns
+4. **Use the zoom slider** to adjust the view
+5. **Save the pattern** when you're satisfied
+
+## Development
 
 ### TODO
 
-- Forhåndsdefinerte mønstre
-- Fargevalg for aktive ruter
-- Eksport til PNG/SVG
-- Animerte mønstre
-- Symmetriske tegnemodi
+- Predefined patterns
+- Color selection for active cells
+- Export to PNG/SVG
+- Animated patterns
+- Symmetrical drawing modes
 
-## 🚀 Live Demo
+## Demo
 
-Du kan teste applikasjonen live på: [GitHub Pages](https://jonasnico.github.io/grid/)
+You can test the application at: [GitHub Pages](https://jonasnico.github.io/grid/)
