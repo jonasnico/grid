@@ -7,7 +7,7 @@ class GridPatternTool {
     this.historyIndex = -1;
     this.maxHistorySize = 50;
     this.isDragging = false;
-    this.dragMode = null; // 'activate' or 'deactivate'
+    this.dragMode = null;
 
     this.initializeElements();
     this.setupEventListeners();
@@ -31,19 +31,16 @@ class GridPatternTool {
   }
 
   setupEventListeners() {
-    // Grid size change
     this.gridSizeSelect.addEventListener("change", () => {
       const newGridSize = parseInt(this.gridSizeSelect.value);
       this.changeGridSize(newGridSize);
     });
 
-    // Zoom control
     this.zoomSlider.addEventListener("input", () => {
       this.zoom = parseFloat(this.zoomSlider.value);
       this.updateZoom();
     });
 
-    // Control buttons
     this.clearBtn.addEventListener("click", () => this.clearGrid());
     this.undoBtn.addEventListener("click", () => this.undo());
     this.redoBtn.addEventListener("click", () => this.redo());
@@ -51,7 +48,6 @@ class GridPatternTool {
     this.loadBtn.addEventListener("click", () => this.fileInput.click());
     this.fileInput.addEventListener("change", (e) => this.loadPattern(e));
 
-    // Keyboard shortcuts
     document.addEventListener("keydown", (e) => {
       if (e.ctrlKey || e.metaKey) {
         switch (e.key) {
@@ -78,7 +74,6 @@ class GridPatternTool {
       }
     });
 
-    // Global mouse events for drag support
     document.addEventListener("mouseup", () => {
       if (this.isDragging) {
         this.saveState();
@@ -97,7 +92,6 @@ class GridPatternTool {
       this.dragMode = null;
     });
 
-    // Global mousemove for continuous drawing
     document.addEventListener("mousemove", (e) => {
       if (this.isDragging) {
         const elementFromPoint = document.elementFromPoint(
@@ -116,14 +110,12 @@ class GridPatternTool {
     this.gridElement.innerHTML = "";
     this.gridElement.className = "grid changing";
 
-    // Calculate cell size based on zoom and grid size
     const baseSize = Math.max(15, Math.min(30, 600 / this.gridSize));
     const cellSize = baseSize * this.zoom;
 
     this.gridElement.style.gridTemplateColumns = `repeat(${this.gridSize}, ${cellSize}px)`;
     this.gridElement.style.gridTemplateRows = `repeat(${this.gridSize}, ${cellSize}px)`;
 
-    // Create cells
     for (let i = 0; i < this.gridSize * this.gridSize; i++) {
       const cell = document.createElement("div");
       cell.className = "cell";
@@ -131,7 +123,6 @@ class GridPatternTool {
       cell.style.width = `${cellSize}px`;
       cell.style.height = `${cellSize}px`;
 
-      // Mouse events for clicking and dragging
       cell.addEventListener("mousedown", (e) => {
         e.preventDefault();
         this.isDragging = true;
@@ -140,7 +131,6 @@ class GridPatternTool {
         this.handleCellInteraction(i, true);
       });
 
-      // Touch events for mobile support
       cell.addEventListener("touchstart", (e) => {
         e.preventDefault();
         this.isDragging = true;
@@ -175,11 +165,9 @@ class GridPatternTool {
       this.gridElement.appendChild(cell);
     }
 
-    // Update display
     this.updateDisplay();
     this.updateCellAppearance();
 
-    // Remove animation class after animation completes
     setTimeout(() => {
       this.gridElement.classList.remove("changing");
     }, 300);
@@ -190,7 +178,6 @@ class GridPatternTool {
     let changed = false;
 
     if (isClick) {
-      // On click, toggle the cell
       if (wasActive) {
         this.activePattern.delete(index);
         changed = true;
@@ -199,7 +186,6 @@ class GridPatternTool {
         changed = true;
       }
     } else if (this.isDragging) {
-      // On drag, follow the drag mode
       if (this.dragMode === "activate" && !wasActive) {
         this.activePattern.add(index);
         changed = true;
@@ -229,7 +215,6 @@ class GridPatternTool {
   updateZoom() {
     this.zoomValue.textContent = Math.round(this.zoom * 100) + "%";
 
-    // Recalculate cell sizes
     const baseSize = Math.max(15, Math.min(30, 600 / this.gridSize));
     const cellSize = baseSize * this.zoom;
 
@@ -247,7 +232,6 @@ class GridPatternTool {
     this.activeCount.textContent = this.activePattern.size;
     this.totalCount.textContent = this.gridSize * this.gridSize;
 
-    // Update button states
     this.undoBtn.disabled = this.historyIndex <= 0;
     this.redoBtn.disabled = this.historyIndex >= this.history.length - 1;
   }
@@ -260,10 +244,8 @@ class GridPatternTool {
   }
 
   saveState() {
-    // Remove any history after current index
     this.history = this.history.slice(0, this.historyIndex + 1);
 
-    // Add new state
     const state = {
       pattern: new Set(this.activePattern),
       gridSize: this.gridSize,
@@ -271,7 +253,6 @@ class GridPatternTool {
     this.history.push(state);
     this.historyIndex++;
 
-    // Limit history size
     if (this.history.length > this.maxHistorySize) {
       this.history.shift();
       this.historyIndex--;
@@ -354,7 +335,6 @@ class GridPatternTool {
           this.createGrid();
           this.saveState();
 
-          // Show success message
           this.showMessage("Mønster lastet inn!", "success");
         } else {
           throw new Error("Ugyldig fil format");
@@ -368,15 +348,13 @@ class GridPatternTool {
     };
 
     reader.readAsText(file);
-    event.target.value = ""; // Clear file input
+    event.target.value = "";
   }
   showMessage(message, type = "info") {
-    // Create message element
     const messageEl = document.createElement("div");
     messageEl.textContent = message;
     messageEl.className = "message-notification";
 
-    // Define colors for different message types
     let backgroundColor;
     switch (type) {
       case "error":
@@ -411,7 +389,6 @@ class GridPatternTool {
 
     document.body.appendChild(messageEl);
 
-    // Remove after 3 seconds
     setTimeout(() => {
       messageEl.style.animation = "slideOut 0.3s ease";
       setTimeout(() => {
@@ -424,7 +401,6 @@ class GridPatternTool {
     const oldGridSize = this.gridSize;
     const oldPattern = new Set(this.activePattern);
 
-    // If the new size is smaller, we need to check if we lose any pattern data
     if (newGridSize < oldGridSize) {
       const offsetRow = Math.floor((oldGridSize - newGridSize) / 2);
       const offsetCol = Math.floor((oldGridSize - newGridSize) / 2);
@@ -433,7 +409,6 @@ class GridPatternTool {
         const row = Math.floor(index / oldGridSize);
         const col = index % oldGridSize;
 
-        // Check if cell is outside the centered area that will be preserved
         const adjustedRow = row - offsetRow;
         const adjustedCol = col - offsetCol;
 
@@ -448,17 +423,14 @@ class GridPatternTool {
       if (willLoseData) {
         const confirmMessage = `Å redusere rutenettet fra ${oldGridSize}x${oldGridSize} til ${newGridSize}x${newGridSize} vil fjerne deler av mønsteret som ikke passer i det sentrale området. Vil du fortsette?`;
         if (!confirm(confirmMessage)) {
-          // Reset the select to the old value
           this.gridSizeSelect.value = oldGridSize;
           return;
         }
       }
     }
 
-    // Convert pattern from old grid to new grid
     const newPattern = new Set();
 
-    // Calculate offset to center the old pattern in the new grid
     const offsetRow = Math.floor((newGridSize - oldGridSize) / 2);
     const offsetCol = Math.floor((newGridSize - oldGridSize) / 2);
 
@@ -467,13 +439,11 @@ class GridPatternTool {
       const col = index % oldGridSize;
 
       if (newGridSize >= oldGridSize) {
-        // Expanding: center the pattern
         const newRow = row + offsetRow;
         const newCol = col + offsetCol;
         const newIndex = newRow * newGridSize + newCol;
         newPattern.add(newIndex);
       } else {
-        // Shrinking: only keep cells that fit (with centering consideration)
         const adjustedRow = row - offsetRow;
         const adjustedCol = col - offsetCol;
 
@@ -489,15 +459,12 @@ class GridPatternTool {
       }
     }
 
-    // Update grid size and pattern
     this.gridSize = newGridSize;
     this.activePattern = newPattern;
 
-    // Recreate the grid
     this.createGrid();
     this.saveState();
 
-    // Show message about pattern preservation
     if (newGridSize > oldGridSize) {
       this.showMessage(
         `Rutenett utvidet til ${newGridSize}x${newGridSize}. Mønster sentrert!`,
@@ -512,7 +479,6 @@ class GridPatternTool {
   }
 }
 
-// Add CSS animations for messages
 const style = document.createElement("style");
 style.textContent = `
     @keyframes slideIn {
@@ -537,7 +503,6 @@ style.textContent = `
         }
     }
     
-    /* Responsive message positioning */
     @media (max-width: 768px) {
         .message-notification {
             top: 10px !important;
@@ -550,7 +515,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Initialize the application when the page loads
 document.addEventListener("DOMContentLoaded", () => {
   new GridPatternTool();
 });

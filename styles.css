@@ -9,7 +9,6 @@ body {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   color: #333;
-  /* Prevent text selection during drag operations */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -142,7 +141,6 @@ main {
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
-  /* Improve drag performance */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -189,7 +187,6 @@ main {
   color: #667eea;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .container {
     padding: 10px;
@@ -220,7 +217,6 @@ main {
   }
 }
 
-/* Animation for grid changes */
 @keyframes gridChange {
   0% {
     opacity: 0.7;
@@ -236,7 +232,6 @@ main {
   animation: gridChange 0.3s ease;
 }
 
-/* Add drag cursor during drag operations */
 body.dragging .cell {
   cursor: crosshair;
 }
