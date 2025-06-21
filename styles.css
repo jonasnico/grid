@@ -1,0 +1,246 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+  /* Prevent text selection during drag operations */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container {
+  max-width: 100vw;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+header {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 300;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+label {
+  font-weight: 500;
+  color: #555;
+}
+
+select,
+input[type="range"] {
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+select:focus,
+input[type="range"]:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #495057;
+  border: 2px solid #dee2e6;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.grid-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  overflow: auto;
+  max-height: calc(100vh - 300px);
+  max-width: 90vw;
+}
+
+.grid {
+  display: grid;
+  gap: 1px;
+  background-color: #ccc;
+  border: 2px solid #999;
+  transition: transform 0.3s ease;
+  user-select: none;
+}
+
+.cell {
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  /* Improve drag performance */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cell:hover {
+  background-color: #e3f2fd;
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+.cell.active {
+  background-color: #667eea;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.cell.active:hover {
+  background: linear-gradient(135deg, #5a6fd8, #6a4190);
+}
+
+.info-panel {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.pattern-info {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  font-weight: 500;
+  color: #555;
+}
+
+#zoomValue {
+  min-width: 45px;
+  text-align: center;
+  font-weight: 500;
+  color: #667eea;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .control-group {
+    justify-content: center;
+  }
+
+  .pattern-info {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .grid-container {
+    padding: 15px;
+    max-width: 95vw;
+  }
+}
+
+/* Animation for grid changes */
+@keyframes gridChange {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.grid.changing {
+  animation: gridChange 0.3s ease;
+}
+
+/* Add drag cursor during drag operations */
+body.dragging .cell {
+  cursor: crosshair;
+}
+
+body.dragging {
+  cursor: crosshair;
+}

@@ -1,0 +1,30 @@
+{
+  "name": "rutenett-monster-verktoy",
+  "version": "1.0.0",
+  "description": "En interaktiv web-applikasjon for å lage mønstre på et rutenett",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "grid",
+    "pattern",
+    "drawing",
+    "pixel-art",
+    "canvas",
+    "javascript",
+    "web-app"
+  ],
+  "author": "Jonas Nicolaysen",
+  "license": "MIT",
+  "homepage": "https://github.com/jonas-nicolaysen/grid#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonas-nicolaysen/grid.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonas-nicolaysen/grid/issues"
+  }
+}
