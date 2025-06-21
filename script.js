@@ -33,9 +33,8 @@ class GridPatternTool {
   setupEventListeners() {
     // Grid size change
     this.gridSizeSelect.addEventListener("change", () => {
-      this.gridSize = parseInt(this.gridSizeSelect.value);
-      this.createGrid();
-      this.saveState();
+      const newGridSize = parseInt(this.gridSizeSelect.value);
+      this.changeGridSize(newGridSize);
     });
 
     // Zoom control
@@ -371,11 +370,28 @@ class GridPatternTool {
     reader.readAsText(file);
     event.target.value = ""; // Clear file input
   }
-
   showMessage(message, type = "info") {
     // Create message element
     const messageEl = document.createElement("div");
     messageEl.textContent = message;
+    messageEl.className = "message-notification";
+
+    // Define colors for different message types
+    let backgroundColor;
+    switch (type) {
+      case "error":
+        backgroundColor = "#e74c3c";
+        break;
+      case "success":
+        backgroundColor = "#27ae60";
+        break;
+      case "info":
+        backgroundColor = "#3498db";
+        break;
+      default:
+        backgroundColor = "#27ae60";
+    }
+
     messageEl.style.cssText = `
             position: fixed;
             top: 20px;
@@ -386,7 +402,11 @@ class GridPatternTool {
             font-weight: 500;
             z-index: 1000;
             animation: slideIn 0.3s ease;
-            background: ${type === "error" ? "#e74c3c" : "#27ae60"};
+            background: ${backgroundColor};
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            max-width: 300px;
+            word-wrap: break-word;
+            margin-right: 10px;
         `;
 
     document.body.appendChild(messageEl);
@@ -398,6 +418,97 @@ class GridPatternTool {
         document.body.removeChild(messageEl);
       }, 300);
     }, 3000);
+  }
+
+  changeGridSize(newGridSize) {
+    const oldGridSize = this.gridSize;
+    const oldPattern = new Set(this.activePattern);
+
+    // If the new size is smaller, we need to check if we lose any pattern data
+    if (newGridSize < oldGridSize) {
+      const offsetRow = Math.floor((oldGridSize - newGridSize) / 2);
+      const offsetCol = Math.floor((oldGridSize - newGridSize) / 2);
+
+      const willLoseData = Array.from(oldPattern).some((index) => {
+        const row = Math.floor(index / oldGridSize);
+        const col = index % oldGridSize;
+
+        // Check if cell is outside the centered area that will be preserved
+        const adjustedRow = row - offsetRow;
+        const adjustedCol = col - offsetCol;
+
+        return (
+          adjustedRow < 0 ||
+          adjustedRow >= newGridSize ||
+          adjustedCol < 0 ||
+          adjustedCol >= newGridSize
+        );
+      });
+
+      if (willLoseData) {
+        const confirmMessage = `Å redusere rutenettet fra ${oldGridSize}x${oldGridSize} til ${newGridSize}x${newGridSize} vil fjerne deler av mønsteret som ikke passer i det sentrale området. Vil du fortsette?`;
+        if (!confirm(confirmMessage)) {
+          // Reset the select to the old value
+          this.gridSizeSelect.value = oldGridSize;
+          return;
+        }
+      }
+    }
+
+    // Convert pattern from old grid to new grid
+    const newPattern = new Set();
+
+    // Calculate offset to center the old pattern in the new grid
+    const offsetRow = Math.floor((newGridSize - oldGridSize) / 2);
+    const offsetCol = Math.floor((newGridSize - oldGridSize) / 2);
+
+    for (const index of oldPattern) {
+      const row = Math.floor(index / oldGridSize);
+      const col = index % oldGridSize;
+
+      if (newGridSize >= oldGridSize) {
+        // Expanding: center the pattern
+        const newRow = row + offsetRow;
+        const newCol = col + offsetCol;
+        const newIndex = newRow * newGridSize + newCol;
+        newPattern.add(newIndex);
+      } else {
+        // Shrinking: only keep cells that fit (with centering consideration)
+        const adjustedRow = row - offsetRow;
+        const adjustedCol = col - offsetCol;
+
+        if (
+          adjustedRow >= 0 &&
+          adjustedRow < newGridSize &&
+          adjustedCol >= 0 &&
+          adjustedCol < newGridSize
+        ) {
+          const newIndex = adjustedRow * newGridSize + adjustedCol;
+          newPattern.add(newIndex);
+        }
+      }
+    }
+
+    // Update grid size and pattern
+    this.gridSize = newGridSize;
+    this.activePattern = newPattern;
+
+    // Recreate the grid
+    this.createGrid();
+    this.saveState();
+
+    // Show message about pattern preservation
+    if (newGridSize > oldGridSize) {
+      this.showMessage(
+        `Rutenett utvidet til ${newGridSize}x${newGridSize}. Mønster sentrert!`,
+        "success"
+      );
+    } else if (newGridSize < oldGridSize) {
+      this.showMessage(
+        `Rutenett redusert til ${newGridSize}x${newGridSize}. Sentralt område bevart!`,
+        "info"
+      );
+    }
   }
 }
 
@@ -423,6 +534,17 @@ style.textContent = `
         to {
             transform: translateX(100%);
             opacity: 0;
+        }
+    }
+    
+    /* Responsive message positioning */
+    @media (max-width: 768px) {
+        .message-notification {
+            top: 10px !important;
+            right: 10px !important;
+            left: 10px !important;
+            max-width: none !important;
+            margin-right: 0 !important;
         }
     }
 `;

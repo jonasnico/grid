@@ -17,6 +17,19 @@ En interaktiv web-applikasjon for å lage mønstre på et rutenett. Perfekt for 
 - 30x30 ruter (900 celler)
 - 40x40 ruter (1600 celler)
 - 50x50 ruter (2500 celler)
+- 60x60 ruter (3600 celler)
+- **Mønsteret sentreres** når du øker rutenett-størrelsen
+- **Smart reduksjon** med bekreftelse når du reduserer størrelsen
+
+### 🔄 Smart rutenett-størrelse endring
+
+Applikasjonen har intelligent håndtering av rutenett-størrelse endringer:
+
+- **Økning av størrelse**: Mønsteret sentreres automatisk i det nye, større rutenettet
+- **Reduksjon av størrelse**: Du får en bekreftelse hvis deler av mønsteret vil gå tapt utenfor det sentrale området
+- **Automatisk sentrering**: Rutenettet utvides i alle retninger for å holde mønsteret i midten
+
+**Eksempel**: Et mønster laget i 20x20 vil være perfekt sentrert i et 50x50 rutenett.
 
 ### 🔍 Zoom funksjonalitet
 
